@@ -1,4 +1,4 @@
-___# 🛰 TWIX-AI-ASSISTANT
+🛰 TWIX-AI-ASSISTANT
 
 TWIX AI is a full-stack AI chatbot application built to demonstrate clean frontend-backend integration with a modern UI and an LLM-powered backend.
 
