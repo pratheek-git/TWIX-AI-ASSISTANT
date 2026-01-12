@@ -1,0 +1,56 @@
+@import "tailwindcss";
+
+/* Remove white border / frame */
+html, body, #root {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+/* Typography */
+body {
+  font-family: Inter, system-ui, sans-serif;
+}
+
+/* Logo animation */
+@keyframes pulse-glow {
+  0% {
+    box-shadow: 0 0 0px rgba(99,102,241,0.6);
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 0 12px rgba(99,102,241,0.9);
+    transform: scale(1.05);
+  }
+  100% {
+    box-shadow: 0 0 0px rgba(99,102,241,0.6);
+    transform: scale(1);
+  }
+}
+
+.twix-logo {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+/* Subtle animation */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.2s ease-out;
+}
+@keyframes slow-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+.spin-slow {
+  animation: slow-spin 10s linear infinite;
+}
