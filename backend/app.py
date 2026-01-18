@@ -1,16 +1,11 @@
 import os
 from typing import List, Dict
 from dotenv import load_dotenv
-
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-
 from groq import Groq
 
-# --------------------------------------------------
-# ENV SETUP
-# --------------------------------------------------
 load_dotenv()
 
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
@@ -19,9 +14,6 @@ if not GROQ_API_KEY:
 
 client = Groq(api_key=GROQ_API_KEY)
 
-# --------------------------------------------------
-# FASTAPI APP
-# --------------------------------------------------
 app = FastAPI()
 
 app.add_middleware(
@@ -32,9 +24,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# --------------------------------------------------
-# MODELS
-# --------------------------------------------------
 class UserInput(BaseModel):
     message: str
     conversation_id: str
@@ -49,9 +38,6 @@ class Conversation:
         self.active = True
 
 
-# --------------------------------------------------
-# IN-MEMORY STORE
-# --------------------------------------------------
 conversations: Dict[str, Conversation] = {}
 
 
@@ -61,9 +47,6 @@ def get_or_create_conversation(conversation_id: str) -> Conversation:
     return conversations[conversation_id]
 
 
-# --------------------------------------------------
-# GROQ QUERY
-# --------------------------------------------------
 def query_groq_api(conversation: Conversation) -> str:
     try:
         stream = client.chat.completions.create(
@@ -88,10 +71,6 @@ def query_groq_api(conversation: Conversation) -> str:
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-
-# --------------------------------------------------
-# ROUTES
-# --------------------------------------------------
 @app.post("/chat/")
 async def chat(input: UserInput):
     conversation = get_or_create_conversation(input.conversation_id)
@@ -114,10 +93,6 @@ async def chat(input: UserInput):
         "response": response,
     }
 
-
-# --------------------------------------------------
-# ENTRY POINT
-# --------------------------------------------------
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run("app:app", host="0.0.0.0", port=8000, reload=True)
